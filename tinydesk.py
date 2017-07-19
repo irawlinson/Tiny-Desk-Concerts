@@ -5,9 +5,15 @@
 # date:   07/19/2017
 # desc:   Downloads mp3 files of npr's tiny desk concerts
 
+# Dependencies:
+#     System:
+#     - ffmpeg
+#     - eyeD3
+#     Python:
+#     - mutagen
+
 import urllib2
 import urllib
-import ssl
 from xml.etree import ElementTree as etree
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
@@ -24,9 +30,6 @@ if not os.path.exists("trimmed"):
 
 if not os.path.exists("images"):
     os.makedirs("images")
-
-# Context to bypass ssl verification
-context = ssl._create_unverified_context()
 
 # Get the rss feed for the tiny desk concert podcast
 
@@ -48,6 +51,7 @@ if not os.path.isfile(coverArt):
 songTitles = []
 songUrls = []
 songYears = []
+failedDownloads = []
 
 for entry in items:
     title = entry.findtext('title')
@@ -81,7 +85,8 @@ def downloadMP3(n):
         urllib.urlretrieve(songUrls[n], fileName)
         print "Downloaded " + songTitles[n] + "."
     except (HeaderNotFoundError, IOError):
-        print "Could not download " + songTitles[n]
+        failedDownloads.append(songTitles[n])
+        print "Could not download " + songTitles[n] + "."
 
 def getTrackNum(song):
     firstTrackInAlbum = songYears.index(songYears[song])
@@ -153,7 +158,9 @@ trimIntros()
 
 addArt()
 
-# import pprint.pprint as pprint
-# pprint(EasyID3.valid_keys.keys())
+# print('\n'.join(map(str, EasyID3.valid_keys.keys())))
 
 print 'Done!'
+if failedDownloads:
+    print "The following Tiny Desk Concerts could not be downloaded:"
+    print " - " + ('\n - '.join(map(str, failedDownloads)))
