@@ -1,0 +1,17 @@
+* Tiny-Desk-Concerts
+Download NPR Tiny Desk Concerts as mp3 files.
+
+* Features
+  - Trim ads and intro from beginning
+  - Separate into albums by month/year
+
+* Future
+  - Delete un-trimmed files
+    - Check existence in the trimmed folder before downloading
+
+* Dependencies
+  - System
+    - eyeD3
+    - ffmpeg
+  - Python
+    - mutagen
