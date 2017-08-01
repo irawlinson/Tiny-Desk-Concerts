@@ -153,11 +153,12 @@ def trimIntros():
 
 def addArt():
     for i in xrange(len(songTitles)):
-        fileName = trimmedFolder + "/" + songTitles[i] + ".mp3"
+        # fileName = trimmedFolder + "/" + songTitles[i] + ".mp3"
+        fileName = "trimmed/" + songTitles[i] + ".mp3"
         artArg = coverArt + ":FRONT_COVER"
         if os.path.isfile(fileName):
             print "Adding art to " + songTitles[i]
-            command = ["eyeD3", "--add-image", artArg, "images/npr.jpg", fileName]
+            command = ["eyeD3", "--add-image", artArg, coverArt, fileName]
             subprocess.call(command)
 
 
